@@ -4,6 +4,36 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 
+class ConsultationRequest(models.Model):
+
+    class Status(models.IntegerChoices):
+        PROCESSING = 1, 'Обрабатывается'
+        PROCESSED = 2, 'Обработана'
+
+    name = models.CharField('имя', max_length=100)
+    phone_number = PhoneNumberField(verbose_name='номер телефона')
+    acceptance_of_rules = models.BooleanField('согласия с правилами', default=False)
+    created = models.DateTimeField('дата', auto_now_add=True)
+    status = models.SmallIntegerField(
+        'статус',
+        choices=Status.choices,
+        default=Status.PROCESSING,
+    )
+
+    class Meta:
+        ordering = ['created', 'status']
+        indexes = [
+            models.Index(fields=['created', 'status']),
+            models.Index(fields=['status']),
+            models.Index(fields=['phone_number']),
+        ]
+        verbose_name = 'консультация'
+        verbose_name_plural = 'консультации'
+
+    def __str__(self):
+        return f'Запись №{self.id}'
+
+
 class EventTag(models.Model):
     name = models.CharField('название', max_length=100)
 
