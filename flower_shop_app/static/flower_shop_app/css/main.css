@@ -170,15 +170,6 @@ bottom: 0;
 .recommended__block:last-child {
 	margin-right: 0;
 }
-.recommended__block_first {
-	background: url('../images/recommendedBg1.jpg') no-repeat center bottom / cover;
-}
-.recommended__block_sec {
-	background: url('../images/recommendedBg2.jpg') no-repeat center bottom / cover;
-}
-.recommended__block_thr {
-	background: url('../images/recommendedBg3.jpg') no-repeat center bottom / cover;
-}
 .recommended__block_elems {
 	width: 100%;
 	padding: 15px;
