@@ -3,12 +3,12 @@
 <footer id="footer">
     <div class="container">
         <div class="footer">
-            <a href="/"><img src="{% static 'flower_shop_app/images/logo.svg' %}" alt="logo" class="logo footer__logo"></a>
+            <a href="{% url 'flower_shop_app:index' %}"><img src="{% static 'flower_shop_app/images/logo.svg' %}" alt="logo" class="logo footer__logo"></a>
             <nav>
                 <ul class="menu footer__menu ficc">
-                    <li class="menu__item"><a href="#" class="menu__item_link">Каталог</a></li>
-                    <li class="menu__item"><a href="#" class="menu__item_link">Рекомендации</a></li>
-                    <li class="menu__item"><a href="#" class="menu__item_link">Контакты</a></li>
+                    <li class="menu__item"><a href="{% url 'flower_shop_app:catalog' %}" class="menu__item_link">Каталог</a></li>
+                    <li class="menu__item"><a href="{% url 'flower_shop_app:index' %}#recommended" class="menu__item_link">Рекомендации</a></li>
+                    <li class="menu__item"><a href="{% url 'flower_shop_app:index' %}#contacts" class="menu__item_link">Контакты</a></li>
                 </ul>
             </nav>
             <hr class="line"></hr>
