@@ -4,6 +4,17 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 
+class EventTag(models.Model):
+    name = models.CharField('название', max_length=100)
+
+    class Meta:
+        verbose_name = 'тег события'
+        verbose_name_plural = 'теги событий'
+
+    def __str__(self):
+        return self.name
+
+
 class Flower(models.Model):
 
     name = models.CharField('название', max_length=100)
@@ -43,6 +54,7 @@ class FlowerBouquet(models.Model):
     availability = models.BooleanField('наличие', default=False)
     created = models.DateTimeField('создан', auto_now_add=True)
     updated = models.DateTimeField('обновлен', auto_now=True)
+    event_tags = models.ManyToManyField(EventTag, related_name='flower_bouquets')
 
     class Meta:
         ordering = ['name']

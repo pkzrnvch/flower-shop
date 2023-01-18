@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from flower_shop_app.models import Flower, FlowerBouquet, FlowerBouquetItem, Order, OrderItem
+from flower_shop_app.models import EventTag, Flower, FlowerBouquet, FlowerBouquetItem, Order, OrderItem
+
+
+@admin.register(EventTag)
+class EventTagAdmin(admin.ModelAdmin):
+    list_display = ['name']
 
 
 class OrderItemInline(admin.TabularInline):
@@ -33,14 +38,21 @@ class FlowerInline(admin.TabularInline):
 
 @admin.register(FlowerBouquet)
 class FlowerBouquetAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'availability']
+    list_display = ['name', 'price', 'availability', 'event_tags_display']
     list_filter = ['availability']
+    list_editable = ['availability', 'price']
     search_fields = ['name']
     ordering = ['name']
     readonly_fields = ['bouquet_image']
     inlines = [
         FlowerInline,
     ]
+
+    def event_tags_display(self, obj):
+        return ', '.join(
+            [event_tag.name for event_tag in obj.event_tags.all()]
+        )
+    event_tags_display.short_description = 'Теги событий'
 
     def bouquet_image(self, obj):
         return mark_safe('<img src="{url}" width="300px" />'.format(url=obj.image.url))
