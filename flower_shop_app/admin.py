@@ -1,7 +1,15 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from flower_shop_app.models import EventTag, Flower, FlowerBouquet, FlowerBouquetItem, Order, OrderItem
+from flower_shop_app.models import ConsultationRequest, EventTag, Flower, FlowerBouquet, FlowerBouquetItem, Order, \
+    OrderItem
+
+
+@admin.register(ConsultationRequest)
+class ConsultationRequestAdmin(admin.ModelAdmin):
+    list_display = ['status', 'created', 'name', 'phone_number']
+    list_filter = ['status', 'created']
+    search_fields = ['phone_number']
 
 
 @admin.register(EventTag)
