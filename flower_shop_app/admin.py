@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from flower_shop_app.models import Flower, FlowerBouquet, FlowerBouquetItem, Order, OrderItem
 
@@ -36,6 +37,10 @@ class FlowerBouquetAdmin(admin.ModelAdmin):
     list_filter = ['availability']
     search_fields = ['name']
     ordering = ['name']
+    readonly_fields = ['bouquet_image']
     inlines = [
         FlowerInline,
     ]
+
+    def bouquet_image(self, obj):
+        return mark_safe('<img src="{url}" width="300px" />'.format(url=obj.image.url))

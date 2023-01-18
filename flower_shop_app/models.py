@@ -39,7 +39,7 @@ class FlowerBouquet(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
-    image = models.ImageField('картинка', blank=True)
+    image = models.ImageField('картинка', blank=True, upload_to='flower_bouquets')
     availability = models.BooleanField('наличие', default=False)
     created = models.DateTimeField('создан', auto_now_add=True)
     updated = models.DateTimeField('обновлен', auto_now=True)
