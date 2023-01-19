@@ -21,7 +21,6 @@ class ConsultationRequestForm(forms.ModelForm):
         })
         self.fields['acceptance_of_rules'].widget.attrs.update({
             'class': 'singUpConsultation__ckekbox',
-            'checked': 'checked',
         })
 
     def clean_acceptance_of_rules(self):
