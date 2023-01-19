@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from flower_shop_app.models import ConsultationRequest, EventTag, Flower, FlowerBouquet, FlowerBouquetItem, Order, \
+from flower_shop_app.models import ConsultationRequest, EventTag, Flower, FlowerBouquet, FlowerBouquetAttribute, \
+    FlowerBouquetAttributeItem, \
+    FlowerBouquetItem, Order, \
     OrderItem
 
 
@@ -32,11 +34,22 @@ class OrderAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(FlowerBouquetAttribute)
+class FlowerBouquetAttributeAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    search_fields = ['name']
+
+
 @admin.register(Flower)
 class FlowerAdmin(admin.ModelAdmin):
     list_display = ['name', 'quantity', 'availability']
     list_filter = ['availability']
     search_fields = ['name']
+
+
+class BouquetAttributeInline(admin.TabularInline):
+    model = FlowerBouquetAttributeItem
+    extra = 1
 
 
 class FlowerInline(admin.TabularInline):
@@ -54,6 +67,7 @@ class FlowerBouquetAdmin(admin.ModelAdmin):
     readonly_fields = ['bouquet_image']
     inlines = [
         FlowerInline,
+        BouquetAttributeInline,
     ]
 
     def event_tags_display(self, obj):
