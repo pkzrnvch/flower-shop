@@ -37,7 +37,9 @@
                     {{ consultation_form.phone_number }}
                     <div class="checkbox fic">
                         {{ consultation_form.acceptance_of_rules }}
-                        <span class="checkbox__intro">Я согласен(а) с политикой конфиденциальности</span>
+                        <a class="privacy_link" href="{% static 'privacy.pdf' %}" target="_blank">
+                            <span class="checkbox__intro">Я согласен(а) с политикой конфиденциальности</span>
+                        </a>
                     </div>
                     <input type="submit" class="btn singUpConsultation__form_btn" value="Отправить">
                 </form>

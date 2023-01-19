@@ -1,3 +1,4 @@
+{% load static %}
 <section id="consultation">
 		<div class="container">
 			<div class="consultation">
@@ -18,7 +19,9 @@
                     <input type="submit" class="consultation__form_btn" value="Отправить">
                     <div class="checkbox fic">
                         {{ form.acceptance_of_rules }}
-                        <span class="checkbox__intro checkbox__intro_white">Я согласен(а) с политикой конфиденциальности</span>
+                        <a class="privacy_link" href="{% static 'privacy.pdf' %}" target="_blank">
+                            <span class="checkbox__intro checkbox__intro_white">Я согласен(а) с политикой конфиденциальности</span>
+                        </a>
                     </div>
 				</form>
 			</div>
