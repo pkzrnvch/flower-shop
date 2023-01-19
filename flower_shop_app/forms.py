@@ -21,5 +21,10 @@ class ConsultationRequestForm(forms.ModelForm):
         })
         self.fields['acceptance_of_rules'].widget.attrs.update({
             'class': 'singUpConsultation__ckekbox',
-            'checked': True,
+            'checked': 'checked',
         })
+
+    def clean_acceptance_of_rules(self):
+        if not self.cleaned_data['acceptance_of_rules']:
+            raise forms.ValidationError('Вы должны согласиться с правилами')
+        return self.cleaned_data['acceptance_of_rules']
