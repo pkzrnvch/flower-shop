@@ -85,6 +85,8 @@ class FlowerBouquet(models.Model):
     created = models.DateTimeField('создан', auto_now_add=True)
     updated = models.DateTimeField('обновлен', auto_now=True)
     event_tags = models.ManyToManyField(EventTag, related_name='flower_bouquets')
+    width = models.SmallIntegerField('ширина', validators=[MinValueValidator(10)], default=10)
+    height = models.SmallIntegerField('высота', validators=[MinValueValidator(20)], default=20)
 
     class Meta:
         ordering = ['name']
