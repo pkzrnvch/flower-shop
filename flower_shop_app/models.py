@@ -45,6 +45,14 @@ class EventTag(models.Model):
         return self.name
 
 
+class FlowerBouquetAttribute(models.Model):
+    name = models.CharField('название', db_index=True, max_length=200)
+
+    class Meta:
+        verbose_name = 'атрибут букета'
+        verbose_name_plural = 'атрибуты букета'
+
+
 class Flower(models.Model):
 
     name = models.CharField('название', max_length=100)
@@ -71,6 +79,12 @@ class FlowerBouquet(models.Model):
         verbose_name='цветы',
         related_name='flower_bouquets',
         through='FlowerBouquetItem',
+    )
+    attributes = models.ManyToManyField(
+        FlowerBouquetAttribute,
+        verbose_name='атрибуты букета',
+        related_name='flower_bouquets',
+        through='FlowerBouquetAttributeItem'
     )
     name = models.CharField('букет', max_length=100)
     description = models.TextField('описание', blank=True)
@@ -100,6 +114,26 @@ class FlowerBouquet(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class FlowerBouquetAttributeItem(models.Model):
+    flower_bouquet = models.ForeignKey(
+        FlowerBouquet,
+        verbose_name='букет',
+        related_name='flower_bouquet_attributes',
+        on_delete=models.CASCADE,
+    )
+    flower_bouquet_attribute = models.ForeignKey(
+        FlowerBouquetAttribute,
+        verbose_name='атрибут букета',
+        related_name='flower_bouquet_attributes',
+        on_delete=models.CASCADE,
+    )
+    flower_quantity = models.SmallIntegerField(
+        'количество атрибутов в букете',
+        default=1,
+        validators=[MinValueValidator(1)],
+    )
 
 
 class FlowerBouquetItem(models.Model):
