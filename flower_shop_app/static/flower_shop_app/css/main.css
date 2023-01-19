@@ -30,6 +30,10 @@ input::placeholder {
 	margin: 20px 0;
 }
 
+.error_block {
+	padding: 30px;
+	color: darkred;
+}
 
 .container {
 	max-width: 1215px;

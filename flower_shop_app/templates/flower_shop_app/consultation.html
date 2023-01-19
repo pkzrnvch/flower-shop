@@ -27,7 +27,7 @@
                         <ul class="error_block">
                             {% for field in form %}
                                 {% for error in field.errors %}
-                                    <li class="error_message">{{ error }}</li>
+                                    <li>{{ error }}</li>
                                 {% endfor %}
                             {% endfor %}
                         </ul>
