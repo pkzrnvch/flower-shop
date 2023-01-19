@@ -35,6 +35,10 @@ input::placeholder {
 	color: darkred;
 }
 
+.privacy_link {
+	text-decoration: none;
+}
+
 .container {
 	max-width: 1215px;
 	width: 100%;
