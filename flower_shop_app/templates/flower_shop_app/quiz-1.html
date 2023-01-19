@@ -8,15 +8,16 @@
 		<div class="container">
 			<div class="quiz">
 				<div class="quiz__back ">
-					<a href="#" class="quiz__back_link fic"><img src="{% static 'img/arrow-left.svg' %}" alt="arrow-left" class="arrowLeft">
-					<span class="quiz__back_intro">Назад</span></a>
 				</div>
 				<div class="quiz__block">
 					<h1 class="quiz__title">К какому событию нужен букет?</h1>
 					<div class="quiz__elems fic">
-						<button class="quiz__elem">Свадьба</button>
-						<button class="quiz__elem">День рождения</button>
-						<button class="quiz__elem">Без повода</button>
+						<form>
+							{% for event_tag in event_tags %}
+							<button class="quiz__elem" type="submit" name="event_tag_id" value="{{ event_tag.id }}">{{ event_tag.name }}</button>
+							{% endfor %}
+							<button class="quiz__elem" type="submit" name="event_tag_id" value="no_tag">Без повода</button>
+						</form>
 					</div>
 					<div class="quiz__progress">
 						<div class="quiz__progress_step">
