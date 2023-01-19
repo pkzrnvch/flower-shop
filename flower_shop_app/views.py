@@ -1,6 +1,9 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
 
+
+from flower_shop_app.forms import ConsultationRequestForm
 from flower_shop_app.models import FlowerBouquet
 
 
@@ -36,3 +39,26 @@ def catalog(request):
             'bouquets': bouquets,
         }
     )
+
+
+def consultation(request):
+    return render(
+        request,
+        'flower_shop_app/consultation.html',
+        context={'form': ConsultationRequestForm()}
+    )
+
+
+@require_http_methods(['POST'])
+def create_consultation_request(request):
+    form = ConsultationRequestForm(request.POST)
+
+    if not form.is_valid():
+        return render(
+            request,
+            'flower_shop_app/consultation.html',
+            {'form': form}
+        )
+
+    form.save()
+    return redirect('flower_shop_app:index')
