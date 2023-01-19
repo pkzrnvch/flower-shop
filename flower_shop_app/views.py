@@ -1,11 +1,13 @@
+import random
+
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
+from django.shortcuts import render, redirect
 
 
 from flower_shop_app.forms import ConsultationRequestForm
-from flower_shop_app.models import FlowerBouquet
+from flower_shop_app.models import FlowerBouquet, EventTag
 
 
 def index(request):
@@ -74,3 +76,55 @@ def create_consultation_request(request):
         return redirect('flower_shop_app:index')
 
     return redirect(page_url_which_request_was_made)
+
+
+def quiz_step_1(request):
+    event_tags = EventTag.objects.all()
+    event_tag_id = request.GET.get('event_tag_id', None)
+    if event_tag_id:
+        request.session['event_tag_id'] = event_tag_id
+        return redirect('flower_shop_app:quiz_step_2')
+    return render(
+        request,
+        'flower_shop_app/quiz-1.html',
+        context={'event_tags': event_tags}
+    )
+
+
+def quiz_step_2(request):
+    if not request.session.get('event_tag_id', None):
+        return redirect('flower_shop_app:quiz_step_1')
+    bouquet_price_range = request.GET.get('bouquet_price_range', None)
+    if bouquet_price_range:
+        request.session['bouquet_price_range'] = bouquet_price_range
+        return redirect('flower_shop_app:quiz_result')
+    return render(
+        request,
+        'flower_shop_app/quiz-2.html',
+    )
+
+
+def quiz_result(request):
+    event_tag_id = request.session.pop('event_tag_id', None)
+    price_range = request.session.pop('bouquet_price_range', None)
+    if not event_tag_id or not price_range:
+        return redirect('flower_shop_app:quiz_step_1')
+    bouquets = FlowerBouquet.objects.filter(availability=True)
+    if event_tag_id != 'no_tag':
+        bouquets = bouquets.filter(event_tags__id=event_tag_id)
+    if price_range == 'less_than_1000':
+        bouquets = bouquets.filter(price__lt=1000)
+    elif price_range == 'from_1000_to_5000':
+        bouquets = bouquets.filter(price__gte=1000).filter(price__lt=5000)
+    elif price_range == 'more_than_5000':
+        bouquets = bouquets.filter(price__gte=5000)
+    bouquet_to_show = random.choice(list(bouquets.prefetch_related('flowers')))
+    composition = bouquet_to_show.flower_bouquet_items.all().select_related('flower')
+    bouquet_to_show.composition = ' ,'.join(
+        f'{item.flower.name} - {item.flower_quantity} шт.' for item in composition
+    )
+    return render(
+        request,
+        'flower_shop_app/quiz-result.html',
+        context={'bouquet': bouquet_to_show}
+    )
