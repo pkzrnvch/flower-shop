@@ -52,6 +52,9 @@ class FlowerBouquetAttribute(models.Model):
         verbose_name = 'атрибут букета'
         verbose_name_plural = 'атрибуты букета'
 
+    def __str__(self):
+        return self.name
+
 
 class Flower(models.Model):
 
@@ -135,6 +138,13 @@ class FlowerBouquetAttributeItem(models.Model):
         validators=[MinValueValidator(1)],
     )
 
+    class Meta:
+        verbose_name = 'элемент букета'
+        verbose_name_plural = 'элементы букета'
+
+    def __str__(self):
+        return 'элемент букета'
+
 
 class FlowerBouquetItem(models.Model):
 
@@ -155,6 +165,13 @@ class FlowerBouquetItem(models.Model):
         default=1,
         validators=[MinValueValidator(1)],
     )
+
+    class Meta:
+        verbose_name = 'элемент букета'
+        verbose_name_plural = 'элементы букета'
+
+    def __str__(self):
+        return 'элемент букета'
 
 
 class OrderQuerySet(models.QuerySet):
@@ -228,8 +245,8 @@ class OrderItem(models.Model):
     quantity = models.PositiveSmallIntegerField('количество', default=1, validators=[MinValueValidator(1)])
 
     class Meta:
-        verbose_name = 'букет'
-        verbose_name_plural = 'букеты'
+        verbose_name = 'элемент заказа'
+        verbose_name_plural = 'элементы заказа'
 
     def __str__(self):
         return self.flower_bouquet.name
