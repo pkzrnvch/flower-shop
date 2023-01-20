@@ -129,5 +129,8 @@ def quiz_result(request):
     return render(
         request,
         'flower_shop_app/quiz-result.html',
-        context={'bouquet': bouquet_to_show}
+        context={
+            'bouquet': bouquet_to_show,
+            'consultation_form': ConsultationRequestForm(),
+        }
     )

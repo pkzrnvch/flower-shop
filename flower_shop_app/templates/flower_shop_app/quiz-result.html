@@ -24,7 +24,6 @@
 								<p class="card__items_text card__items_text__first">
 									{{ bouquet.composition }}
 								</p>
-								
 							</div>
 						</div>
 					</div>
@@ -36,8 +35,8 @@
 						<hr class="result__items_line" />
 						<div class="result__items_intro">Хотите что-то более специальное?</div>
 						<div class="result__items_block">
-							<button class="btn largeBtn result__items_block__btn">Смотреть всю коллекцию</button>
-							<a href="#consultation" class="btn largeBtn result__items_block__btn">Заказать консультацию</a>
+							<a href="{% url 'flower_shop_app:consultation' %}" style="margin-bottom: -20px"><button class="btn largeBtn result__items_block__btn">Смотреть всю коллекцию</button></a>
+							<a href="#consultation"><button class="btn largeBtn result__items_block__btn">Заказать консультацию</button></a>
 						</div>
 					</div>
 				</div>	
@@ -72,17 +71,8 @@
 			</div>
 		</div>
 	</section>
-	<section id="consultation">
-		<div class="container">
-			<div class="consultation">
-				<div class="title consultation__title">Оставьте заявку на консультацию</div>
-				<form action="#" class="consultation__form">
-					<input type="text" name="fname" class="consultation__form_input" placeholder="Введите Имя" required>
-					<input type="text" name="tel" class="consultation__form_input" placeholder="+ 7 (999) 000 00 00" required>
-					<button type="submit" class="consultation__form_btn">Отправить</button>
-				</form>
-			</div>
-		</div>
-	</section>
+
+	{% include 'flower_shop_app/partials/consultation_form_section.html' with form=consultation_form %}
+
 	{% include 'flower_shop_app/footer.html' %}
 {% endblock %}

@@ -1,29 +1,29 @@
 {% load static %}
 <section id="consultation">
-		<div class="container">
-			<div class="consultation">
-				<div class="title consultation__title">Оставьте заявку на консультацию</div>
-				<form action="{% url 'flower_shop_app:created_consultation' %}" class="consultation__form" method="post">
-                    {% csrf_token %}
-                    {% if form.errors %}
-                        <ul class="error_block">
-                            {% for field in form %}
-                                {% for error in field.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                    {{ form.name }}
-                    {{ form.phone_number }}
-                    <input type="submit" class="consultation__form_btn" value="Отправить">
-                    <div class="checkbox fic">
-                        {{ form.acceptance_of_rules }}
-                        <a class="privacy_link" href="{% static 'privacy.pdf' %}" target="_blank">
-                            <span class="checkbox__intro checkbox__intro_white">Я согласен(а) с политикой конфиденциальности</span>
-                        </a>
-                    </div>
-				</form>
-			</div>
-		</div>
-	</section>
+    <div class="container">
+        <div class="consultation">
+            <div class="title consultation__title">Оставьте заявку на консультацию</div>
+            <form action="{% url 'flower_shop_app:created_consultation' %}" class="consultation__form" method="post">
+                {% csrf_token %}
+                {% if form.errors %}
+                <ul class="error_block">
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {{ form.name }}
+                {{ form.phone_number }}
+                <input type="submit" class="consultation__form_btn" value="Отправить">
+                <div class="checkbox fic">
+                    {{ form.acceptance_of_rules }}
+                    <a class="privacy_link" href="{% static 'privacy.pdf' %}" target="_blank">
+                        <span class="checkbox__intro checkbox__intro_white">Я согласен(а) с политикой конфиденциальности</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
