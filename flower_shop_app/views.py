@@ -1,5 +1,6 @@
 import random
 
+from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
@@ -70,6 +71,8 @@ def create_consultation_request(request):
         return redirect('flower_shop_app:consultation')
 
     form.save()
+
+    messages.success(request, 'Вы успешно записались на консультацию. Мы скоро перезвоним')
 
     page_url_which_request_was_made = request.META.get('HTTP_REFERER', '/')
     if page_url_which_request_was_made == request.build_absolute_uri(reverse('flower_shop_app:consultation')):

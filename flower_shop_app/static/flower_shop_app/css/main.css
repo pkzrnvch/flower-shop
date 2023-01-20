@@ -779,3 +779,10 @@ opacity: 0.3;
 	color: white;
 	opacity: 1;
 }
+
+.alertify-notifier .ajs-message.ajs-success{
+	top: 70px;
+    background: #1757cf;
+	opacity: 0.8;
+	border-radius: 10px;
+}
