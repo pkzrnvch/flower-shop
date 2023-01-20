@@ -4,11 +4,11 @@ from django.contrib import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 
 
 from flower_shop_app.forms import ConsultationRequestForm
-from flower_shop_app.models import FlowerBouquet, EventTag
+from flower_shop_app.models import FlowerBouquet, EventTag, FlowerBouquetAttributeItem, FlowerBouquetItem
 
 
 def index(request):
@@ -131,6 +131,27 @@ def quiz_result(request):
         'flower_shop_app/quiz-result.html',
         context={
             'bouquet': bouquet_to_show,
+            'consultation_form': ConsultationRequestForm(),
+        }
+    )
+
+
+def bouquet_detail(request, bouquet_id):
+    bouquet = get_object_or_404(FlowerBouquet, id=bouquet_id)
+    bouquet_flowers = FlowerBouquetItem.objects\
+        .filter(flower_bouquet_id=bouquet.id)\
+        .prefetch_related('flower')
+    bouquet_attributes = FlowerBouquetAttributeItem.objects\
+        .filter(flower_bouquet_id=bouquet.id)\
+        .prefetch_related('flower_bouquet_attribute')
+
+    return render(
+        request,
+        'flower_shop_app/bouquet_detail.html',
+        {
+            'bouquet': bouquet,
+            'bouquet_flowers': bouquet_flowers,
+            'bouquet_attributes': bouquet_attributes,
             'consultation_form': ConsultationRequestForm(),
         }
     )

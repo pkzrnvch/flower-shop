@@ -1,0 +1,65 @@
+{% extends 'flower_shop_app/base.html' %}
+{% load static %}
+
+{% block title %}{{ bouquet.name }}{% endblock %}
+
+{% block content %}
+	<section id="card">
+		<div class="container">
+			<div class="card ficb">
+				<div class="card__block card__block_first">
+					<img src="{{ bouquet.image.url }}" alt="img" class="card__img">
+				</div>
+				<div class="card__block card__block_sec">
+					<div class="title">{{ bouquet.name }}</div>
+					<div class="card__block_price">{{ bouquet.price|floatformat }} руб</div>
+					<div class="card__elems ">
+						<span class="card__elems_intro">Состав</span>
+						<div class="card__items">
+
+                            {# Flowers #}
+                            {% for attr in bouquet_attributes %}
+                                <span class="card_items_intro">
+                                    {{ attr.flower_bouquet_attribute.name }} - {{ attr.attribute_quantity }} шт.
+                                </span>
+                            {% endfor %}
+
+                            {# Attributes #}
+                            {% for bouquet_flower in bouquet_flowers %}
+                                <span class="card_items_intro">
+                                    {{ bouquet_flower.flower.name }} - {{ bouquet_flower.flower_quantity }} шт.
+                                </span>
+                            {% endfor %}
+
+                            {# Default items #}
+                            <span class="card_items_intro">
+								Рекомендация по уходу - 1 шт.
+							</span>
+							<span class="card_items_intro">
+								Открыточка с вашими пожеланиями - 1 шт.
+							</span>
+							<span class="card_items_intro">
+								Любовь флориста (бесплатно) - 1 шт.
+							</span>
+						</div>
+					</div>
+					<div class="card__elems ">
+						<span class="card__elems_intro">Размер</span>
+						<div class="card__items">
+							<span class="card_items_intro">
+								Высота - {{ bouquet.height }} см
+							</span>
+							<span class="card_items_intro">
+								Ширина - {{ bouquet.width }} см
+							</span>
+						</div>
+					</div>
+					<button class="btn largeBtn card__btn">Заказать букет</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+    {% include 'flower_shop_app/partials/consultation_form_section.html' with form=consultation_form %}
+	{% include 'flower_shop_app/footer.html' %}
+{% endblock %}
