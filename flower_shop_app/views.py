@@ -114,12 +114,19 @@ def quiz_result(request):
     bouquets = FlowerBouquet.objects.filter(availability=True)
     if event_tag_id != 'no_tag':
         bouquets = bouquets.filter(event_tags__id=event_tag_id)
-    if price_range == 'less_than_1000':
-        bouquets = bouquets.filter(price__lt=1000)
-    elif price_range == 'from_1000_to_5000':
-        bouquets = bouquets.filter(price__gte=1000).filter(price__lt=5000)
-    elif price_range == 'more_than_5000':
-        bouquets = bouquets.filter(price__gte=5000)
+
+    price_ranges = {
+        'less_than_1000': lambda bqts: bqts.filter(price__lt=1000),
+        'from_1000_to_5000': lambda bqts: bqts.filter(price__gte=1000, price__lt=5000),
+        'more_than_5000': lambda bqts: bqts.filter(price__gte=5000),
+        'any': lambda bqts: bqts,
+    }
+    bouquets = price_ranges[price_range](bouquets)
+
+    if not bouquets.exists():
+        messages.info(request, 'К сожалению, мы не смогли подобрать для Вас букет. Попробуйте снова.')
+        return redirect('flower_shop_app:quiz_step_1')
+
     bouquet_to_show = random.choice(list(bouquets.prefetch_related('flowers')))
     composition = bouquet_to_show.flower_bouquet_items.all().select_related('flower')
     bouquet_to_show.composition = ' ,'.join(
