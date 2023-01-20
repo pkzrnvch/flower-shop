@@ -6,8 +6,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404, render, redirect
 
-
-from flower_shop_app.forms import ConsultationRequestForm
+from flower_shop_app.forms import ConsultationRequestForm, OrderForm
 from flower_shop_app.models import FlowerBouquet, EventTag, FlowerBouquetAttributeItem, FlowerBouquetItem
 
 
@@ -155,3 +154,35 @@ def bouquet_detail(request, bouquet_id):
             'consultation_form': ConsultationRequestForm(),
         }
     )
+
+
+def order(request, bouquet_id):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            request.session['order_in_process'] = {
+                'bouquet_id': bouquet_id,
+                'client_name': form.cleaned_data['client_name'],
+                'phone_number': form.cleaned_data['phone_number'].as_e164,
+                'address': form.cleaned_data['address'],
+                'delivery_time': form.cleaned_data['delivery_time'],
+            }
+            print(request.session['order_in_process'])
+            return redirect('flower_shop_app:payment')
+    else:
+        form = OrderForm()
+    return render(
+        request,
+        'flower_shop_app/order.html',
+        context={
+            'order_form': form,
+        }
+    )
+
+
+def payment(request):
+    return render(
+        request,
+        'flower_shop_app/payment.html',
+    )
+

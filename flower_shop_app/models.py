@@ -206,6 +206,8 @@ class Order(models.Model):
     delivery_time = models.SmallIntegerField(
         'время доставки',
         choices=DeliveryTime.choices,
+        blank=False,
+        default=None
     )
     status = models.SmallIntegerField(
         'статус заказа',

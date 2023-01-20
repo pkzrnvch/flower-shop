@@ -13,4 +13,6 @@ urlpatterns = [
     path('quiz/step2/', views.quiz_step_2, name='quiz_step_2'),
     path('quiz/result/', views.quiz_result, name='quiz_result'),
     path('bouquet/<int:bouquet_id>/', views.bouquet_detail, name='bouquet_detail'),
+    path('order/<int:bouquet_id>/', views.order, name='order'),
+    path('payment/', views.payment, name='payment'),
 ]
