@@ -1,3 +1,4 @@
+from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 
 from django.core.validators import MinValueValidator
@@ -117,6 +118,9 @@ class FlowerBouquet(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('flower_shop_app:bouquet_detail', args=[self.id])
 
 
 class FlowerBouquetAttributeItem(models.Model):

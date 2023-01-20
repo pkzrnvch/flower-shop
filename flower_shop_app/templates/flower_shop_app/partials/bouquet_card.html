@@ -1,0 +1,10 @@
+<div class="recommended__block bouquet_card" style="background: url('{{ bouquet.image.url }}') no-repeat center bottom / cover;">
+    <div class="recommended__block_elems ficb">
+        <div class="recommended__block_wrapper">
+            <a href="{{ bouquet.get_absolute_url }}" class="recommended__block_intro bouquet_card__text bouquet_card__link ">{{ bouquet.name }}</a>
+        </div>
+        <div class="recommended__block_wrapper">
+            <span class="recommended__block_price bouquet_card__text">{{ bouquet.price|floatformat }} руб</span>
+        </div>
+    </div>
+</div>

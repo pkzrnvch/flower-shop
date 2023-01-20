@@ -786,3 +786,41 @@ opacity: 0.3;
 	opacity: 0.8;
 	border-radius: 10px;
 }
+
+.bouquet_card {
+	border-radius: 10px;
+}
+
+.bouquet_card__text {
+	font-weight: 500;
+	color: #14A87B;
+	text-decoration: none;
+	padding-bottom: 8px;
+}
+
+.recommended__block_wrapper {
+	position: relative;
+}
+
+.bouquet_card__text {
+	font-weight: 500;
+	font-size: 18px;
+}
+
+.bouquet_card__link::before {
+	content: "";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 0;
+	height: 2px;
+	background-image: linear-gradient(to right, #17CF97, #a1f4b9);
+	transition: width 0.25s ease-out;
+}
+
+.bouquet_card__link:hover::before {
+	width: 100%;
+	left: 0;
+	right: auto;
+}
+

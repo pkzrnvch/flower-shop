@@ -25,7 +25,7 @@ def index(request):
 def catalog(request):
     bouquet_list = FlowerBouquet.objects.filter(availability=True)
 
-    bouquets_per_page = 6
+    bouquets_per_page = 3
     paginator = Paginator(bouquet_list, bouquets_per_page)
     page_number = request.GET.get('page', 1)
 
