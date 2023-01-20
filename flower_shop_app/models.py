@@ -132,7 +132,7 @@ class FlowerBouquetAttributeItem(models.Model):
         related_name='flower_bouquet_attributes',
         on_delete=models.CASCADE,
     )
-    flower_quantity = models.SmallIntegerField(
+    attribute_quantity = models.SmallIntegerField(
         'количество атрибутов в букете',
         default=1,
         validators=[MinValueValidator(1)],
