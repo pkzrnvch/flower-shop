@@ -4,6 +4,8 @@
 {% block title %}Подбор букета{% endblock %}
 
 {% block content %}
+    {% include 'flower_shop_app/partials/header.html' %}
+
 	<section id="result">
 		<div class="container">
 			<div class="result p100">
@@ -31,48 +33,20 @@
 					<div class="result__items">
 						<div class="title result__items_title">{{ bouquet.name }}</div>
 						<div class="result__items_price">{{ bouquet.price|floatformat }} руб</div>
-						<button class="btn result__items_btn">Заказать букет</button>
+						<a href="#" class="full_width_btn_link btn_link_dark">Заказать букет</a>
 						<hr class="result__items_line" />
 						<div class="result__items_intro">Хотите что-то более специальное?</div>
 						<div class="result__items_block">
-							<a href="{% url 'flower_shop_app:consultation' %}" style="margin-bottom: -20px"><button class="btn largeBtn result__items_block__btn">Смотреть всю коллекцию</button></a>
-							<a href="#consultation"><button class="btn largeBtn result__items_block__btn">Заказать консультацию</button></a>
+							<a class="full_width_btn_link btn_link_light" href="{% url 'flower_shop_app:catalog' %}">Смотреть всю коллекцию</a>
+							<a class="full_width_btn_link btn_link_light" href="#consultation">Заказать консультацию</a>
 						</div>
 					</div>
 				</div>	
 			</div>
 		</div>
 	</section>
-	<section id="contacts">
-		<div class="container">
-			<div class="contacts">
-				<div class="title">Как нас найти</div>
-				<div class="contacts__elems ficb">
-					<div class="contacts__block">
-						<div class="contacts__block_item ficc">
-							<div class="contacts__block_intro">ул. Пушкинская, 69</div>
-							<a href="tel:89111744460" class="contacts__block_tel">8 (911) 17 44 460</a>
-						</div>
-						<div class="contacts__block_item ficc">
-							<div class="contacts__block_intro">ул. Пушкинская, 69</div>
-							<a href="tel:89111744460" class="contacts__block_tel">8 (911) 17 44 460</a>
-						</div>
-						<div class="contacts__block_item ficc">
-							<div class="contacts__block_intro">ул. Пушкинская, 69</div>
-							<a href="tel:89111744460" class="contacts__block_tel">8 (911) 17 44 460</a>
-						</div>
-					</div>
-					<img src="{% static 'flower_shop_app/images/contactsImg.jpg' %}" alt="contactsImg" class="contacts__img">
-					<div class="contacts__map">
-						<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af39d7a7f1829359b6ffe21ab6356fcaeace17d528d6522dba8772f885c8b1a7d&amp;width=398&amp;height=316&amp;lang=ru_RU&amp;scroll=true"></script>
-					</div>					
-				</div>
-				<button class="btn contacts__btn">Заказать доставку</button>
-			</div>
-		</div>
-	</section>
 
+    {% include 'flower_shop_app/partials/contacts_section.html' with show_delivery_btn=False %}
 	{% include 'flower_shop_app/partials/consultation_form_section.html' with form=consultation_form %}
-
 	{% include 'flower_shop_app/footer.html' %}
 {% endblock %}

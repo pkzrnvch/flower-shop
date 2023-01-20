@@ -4,20 +4,8 @@
 {% block title %}Консультация{% endblock %}
 
 {% block content %}
-    <header id="header">
-		<div class="container">
-			<div class="header ficb">
-				<a href="{% url 'flower_shop_app:index' %}"><img src="{% static 'flower_shop_app/images/logo.svg' %}" alt="logo" class="logo"></a>
-				<nav>
-					<ul class="menu ficc">
-						<li class="menu__item"><a href="{% url 'flower_shop_app:catalog' %}" class="menu__item_link">Каталог</a></li>
-						<li class="menu__item"><a href="{% url 'flower_shop_app:index' %}#recommended" class="menu__item_link">Рекомендации</a></li>
-						<li class="menu__item"><a href="{% url 'flower_shop_app:index' %}#contacts" class="menu__item_link">Контакты</a></li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-	</header>
+    {% include 'flower_shop_app/partials/header.html' %}
+
 	<section id="singUpConsultation">
 		<div class="container">
 			<div class="singUpConsultation">
