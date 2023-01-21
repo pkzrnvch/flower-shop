@@ -12,17 +12,10 @@
 			<div class="catalog">
                 <div class="title">Все букеты</div>
                 <div class="catalog__block">
-                    <div class="recommended__elems ficb recommended__elems_first">
-                        {% for bouquet in bouquets.object_list %}
-                            {% include 'flower_shop_app/partials/bouquet_card.html' with bouquet=bouquet %}
-                        {% endfor %}
-                    </div>
-                    <div class="pagination_wrapper">
-                        {% include 'flower_shop_app/pagination.html' with page=bouquets %}
-                    </div>
+                    {% include 'flower_shop_app/partials/category_bouquets.html' with page_obj=page_obj %}
                 </div>
-			</div>
-		</div>
+		    </div>
+        </div>
 	</section>
 
     {% include 'flower_shop_app/partials/consultation_form_section.html' with form=consultation_form %}

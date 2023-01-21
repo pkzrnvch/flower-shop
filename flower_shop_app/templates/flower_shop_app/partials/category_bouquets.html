@@ -1,0 +1,15 @@
+{% load static %}
+
+<div class="recommended__elems ficb recommended__elems_first fade_in">
+    {% for bouquet in page_obj %}
+        {% include 'flower_shop_app/partials/bouquet_card.html' with bouquet=bouquet %}
+    {% endfor %}
+</div>
+
+{% if page_obj.has_next %}
+    <button id="load_more" class="btn largeBtn"
+            hx-get="{% url 'flower_shop_app:catalog' %}?page={{ page_obj.next_page_number }}"
+            hx-target="#load_more"
+            hx-swap="outerHTML"
+    >Показать еще</button>
+{% endif %}

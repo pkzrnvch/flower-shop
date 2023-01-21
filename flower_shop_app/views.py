@@ -30,17 +30,26 @@ def catalog(request):
     page_number = request.GET.get('page', 1)
 
     try:
-        bouquets = paginator.page(page_number)
+        page_obj = paginator.page(page_number)
     except PageNotAnInteger:
-        bouquets = paginator.page(1)
+        page_obj = paginator.page(1)
     except EmptyPage:
-        bouquets = paginator.page(paginator.num_pages)
+        page_obj = paginator.page(paginator.num_pages)
+
+    if request.htmx:
+        return render(
+            request,
+            'flower_shop_app/partials/category_bouquets.html',
+            {
+                'page_obj': page_obj,
+            }
+        )
 
     return render(
         request,
         'flower_shop_app/catalog.html',
         context={
-            'bouquets': bouquets,
+            'page_obj': page_obj,
             'consultation_form': ConsultationRequestForm(),
         }
     )
