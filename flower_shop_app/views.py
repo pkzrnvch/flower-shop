@@ -212,7 +212,7 @@ def order_payment(request):
         card_year = request.POST.get('card_year', None)
         card_cvc = request.POST.get('card_cvc', None)
         card_name = request.POST.get('card_name', None)
-        client_email = request.POST.get('email', None)
+        client_email = request.POST.get('email', '')
         order_details = request.session.get('order_in_process', None)
         if not any([card_number, card_month, card_year, card_cvc, card_name]):
             return render(
@@ -263,25 +263,22 @@ def order_payment(request):
 def order_payment_confirmation(request):
     payment_id = request.session.get('payment_id', None)
     order_details = request.session.get('order_in_process', None)
-    bouquet = FlowerBouquet.objects.get(id=order_details['bouquet_id'])
-    if not payment_id:
+    if not payment_id or order_details:
         return redirect('flower_shop_app:index')
+    bouquet = FlowerBouquet.objects.get(id=order_details['bouquet_id'])
     payment = Payment.find_one(payment_id)
     context = {
         'payment_status': payment.status,
         'bouquet': bouquet
     }
     if payment.status == 'succeeded':
-        order_details = request.session.get('order_in_process', None)
-        new_order = Order(
+        new_order = Order.objects.create(
             client_name=order_details['client_name'],
             phone_number=order_details['phone_number'],
             address=order_details['address'],
-            delivery_time=order_details['delivery_time']
+            delivery_time=order_details['delivery_time'],
+            email=order_details['delivery_time']
         )
-        if order_details['email']:
-            new_order.email = order_details['email']
-        new_order.save()
         context['order'] = new_order
         request.session.pop('payment_id', None)
         request.session.pop('order_in_process', None)

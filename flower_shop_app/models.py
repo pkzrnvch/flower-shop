@@ -205,7 +205,7 @@ class Order(models.Model):
     client_name = models.CharField('имя клиента', max_length=100)
     phone_number = PhoneNumberField('номер телефона')
     address = models.CharField('адрес', max_length=250)
-    email = models.EmailField(blank=True, null=True)
+    email = models.EmailField(blank=True)
     created = models.DateTimeField('дата и время заказа', auto_now_add=True)
     delivery_time = models.SmallIntegerField(
         'время доставки',
