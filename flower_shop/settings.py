@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'flower_shop_app.apps.FlowerShopAppConfig',
     'phonenumber_field',
+    'utm_tags_tracking'
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+    'utm_tags_tracking.middleware.UTMMiddleware'
 ]
 
 ROOT_URLCONF = 'flower_shop.urls'
