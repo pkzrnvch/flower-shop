@@ -14,5 +14,6 @@ urlpatterns = [
     path('quiz/result/', views.quiz_result, name='quiz_result'),
     path('bouquet/<int:bouquet_id>/', views.bouquet_detail, name='bouquet_detail'),
     path('order/<int:bouquet_id>/', views.order, name='order'),
-    path('payment/', views.payment, name='payment'),
+    path('payment/', views.order_payment, name='payment'),
+    path('payment/confirmation', views.order_payment_confirmation, name='payment_confirmation'),
 ]

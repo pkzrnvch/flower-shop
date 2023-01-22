@@ -1,13 +1,20 @@
 import random
+import uuid
 
 from django.contrib import messages
+from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404, render, redirect
+from yookassa import Payment
 
 from flower_shop_app.forms import ConsultationRequestForm, OrderForm
-from flower_shop_app.models import FlowerBouquet, EventTag, FlowerBouquetAttributeItem, FlowerBouquetItem
+from flower_shop_app.models import (FlowerBouquet,
+                                    EventTag,
+                                    FlowerBouquetAttributeItem,
+                                    FlowerBouquetItem,
+                                    Order)
 
 
 def index(request):
@@ -143,7 +150,7 @@ def quiz_result(request):
     )
     return render(
         request,
-        'flower_shop_app/quiz-result.html',
+        'flower_shop_app/quiz_result.html',
         context={
             'bouquet': bouquet_to_show,
             'consultation_form': ConsultationRequestForm(),
@@ -176,8 +183,10 @@ def order(request, bouquet_id):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
+            bouquet = FlowerBouquet.objects.get(id=bouquet_id)
             request.session['order_in_process'] = {
                 'bouquet_id': bouquet_id,
+                'bouquet_price': f'{bouquet.price}',
                 'client_name': form.cleaned_data['client_name'],
                 'phone_number': form.cleaned_data['phone_number'].as_e164,
                 'address': form.cleaned_data['address'],
@@ -196,9 +205,89 @@ def order(request, bouquet_id):
     )
 
 
-def payment(request):
+def order_payment(request):
+    if request.method == 'POST':
+        card_number = request.POST.get('card_number', None)
+        card_month = request.POST.get('card_month', None)
+        card_year = request.POST.get('card_year', None)
+        card_cvc = request.POST.get('card_cvc', None)
+        card_name = request.POST.get('card_name', None)
+        client_email = request.POST.get('email', None)
+        order_details = request.session.get('order_in_process', None)
+        if not any([card_number, card_month, card_year, card_cvc, card_name]):
+            return render(
+                request,
+                'flower_shop_app/payment.html',
+            )
+        if not order_details:
+            return redirect('flower_shop_app:catalog')
+        if len(card_year) == 2:
+            card_year = f'20{card_year}'
+
+        idempotence_key = str(uuid.uuid4())
+        payment = Payment.create(
+            {
+                'amount': {
+                    'value': str(order_details['bouquet_price']),
+                    'currency': 'RUB'
+                },
+                'payment_method_data': {
+                    'type': 'bank_card',
+                    'card': {
+                        'number': card_number,
+                        'expiry_year': card_year,
+                        'expiry_month': card_month,
+                        'csc': card_cvc,
+                        'cardholder': card_name
+                    }
+                },
+                'confirmation': {
+                    'type': 'redirect',
+                    'return_url': request.build_absolute_uri(reverse('flower_shop_app:payment_confirmation'))
+                },
+                'capture': True,
+                'description': 'Оплата: букет цветов'
+            }, idempotence_key
+        )
+        confirmation_url = payment.confirmation.confirmation_url
+        request.session['payment_id'] = payment.id
+        request.session['order_in_process']['email'] = client_email
+        return redirect(confirmation_url)
+
     return render(
         request,
         'flower_shop_app/payment.html',
+    )
+
+
+def order_payment_confirmation(request):
+    payment_id = request.session.get('payment_id', None)
+    order_details = request.session.get('order_in_process', None)
+    bouquet = FlowerBouquet.objects.get(id=order_details['bouquet_id'])
+    if not payment_id:
+        return redirect('flower_shop_app:index')
+    payment = Payment.find_one(payment_id)
+    context = {
+        'payment_status': payment.status,
+        'bouquet': bouquet
+    }
+    if payment.status == 'succeeded':
+        order_details = request.session.get('order_in_process', None)
+        new_order = Order(
+            client_name=order_details['client_name'],
+            phone_number=order_details['phone_number'],
+            address=order_details['address'],
+            delivery_time=order_details['delivery_time']
+        )
+        if order_details['email']:
+            new_order.email = order_details['email']
+        new_order.save()
+        context['order'] = new_order
+        request.session.pop('payment_id', None)
+        request.session.pop('order_in_process', None)
+    return render(
+        request,
+        'flower_shop_app/payment_confirmation.html',
+        context=context
     )
 
