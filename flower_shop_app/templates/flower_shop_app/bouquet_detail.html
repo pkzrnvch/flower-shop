@@ -56,7 +56,7 @@
 							</span>
 						</div>
 					</div>
-					<button class="btn largeBtn card__btn">Заказать букет</button>
+					<a href="{% url 'flower_shop_app:order' bouquet_id=bouquet.id %}"><button class="btn largeBtn card__btn">Заказать букет</button></a>
 				</div>
 			</div>
 		</div>
