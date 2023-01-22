@@ -192,7 +192,6 @@ def order(request, bouquet_id):
                 'address': form.cleaned_data['address'],
                 'delivery_time': form.cleaned_data['delivery_time'],
             }
-            print(request.session['order_in_process'])
             return redirect('flower_shop_app:payment')
     else:
         form = OrderForm()
