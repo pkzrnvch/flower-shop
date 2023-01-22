@@ -245,13 +245,15 @@ def order_payment(request):
                     'type': 'redirect',
                     'return_url': request.build_absolute_uri(reverse('flower_shop_app:payment_confirmation'))
                 },
+                'metadata': {
+                    'email': client_email
+                },
                 'capture': True,
                 'description': 'Оплата: букет цветов'
             }, idempotence_key
         )
         confirmation_url = payment.confirmation.confirmation_url
         request.session['payment_id'] = payment.id
-        request.session['order_in_process']['email'] = client_email
         return redirect(confirmation_url)
 
     return render(
@@ -263,7 +265,7 @@ def order_payment(request):
 def order_payment_confirmation(request):
     payment_id = request.session.get('payment_id', None)
     order_details = request.session.get('order_in_process', None)
-    if not payment_id or order_details:
+    if not payment_id or not order_details:
         return redirect('flower_shop_app:index')
     bouquet = FlowerBouquet.objects.get(id=order_details['bouquet_id'])
     payment = Payment.find_one(payment_id)
@@ -277,7 +279,7 @@ def order_payment_confirmation(request):
             phone_number=order_details['phone_number'],
             address=order_details['address'],
             delivery_time=order_details['delivery_time'],
-            email=order_details['delivery_time']
+            email=payment.metadata['email']
         )
         context['order'] = new_order
         request.session.pop('payment_id', None)
