@@ -33,7 +33,11 @@
 					<div class="result__items">
 						<div class="title result__items_title">{{ bouquet.name }}</div>
 						<div class="result__items_price">{{ bouquet.price|floatformat }} руб</div>
+<<<<<<< Updated upstream:flower_shop_app/templates/flower_shop_app/quiz-result.html
 						<a href="#" class="full_width_btn_link btn_link_dark">Заказать букет</a>
+=======
+						<a href="{% url 'flower_shop_app:order' bouquet_id=bouquet.id %}"><button class="btn result__items_btn">Заказать букет</button></a>
+>>>>>>> Stashed changes:flower_shop_app/templates/flower_shop_app/quiz_result.html
 						<hr class="result__items_line" />
 						<div class="result__items_intro">Хотите что-то более специальное?</div>
 						<div class="result__items_block">
