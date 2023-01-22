@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from yookassa import Configuration
+from environs import Env
+
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7$zc4u%0-r(p$@2y8u!^1g@naee(rqkc9g#g9i#a2xzfyz8+6s'
+SECRET_KEY = env.str('SECRET_KEY', 'REPLACE_ME')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', [])
 
 
 # Application definition
@@ -115,6 +120,9 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 
 USE_TZ = True
+
+Configuration.account_id = env('YOOKASSA_SHOP_ID')
+Configuration.secret_key = env('YOOKASSA_SECRET_KEY')
 
 
 # Static files (CSS, JavaScript, Images)
