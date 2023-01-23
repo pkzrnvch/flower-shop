@@ -60,15 +60,15 @@
 						<div class="title result__items_title">{{ bouquet.name }}</div>
 						<div class="result__items_price">{{ bouquet.price|floatformat }} руб</div>
 						{% if payment_status == 'canceled' %}
-						<a href="{% url 'flower_shop_app:payment' %}"><button class="btn result__items_btn">Повторить оплату</button></a>
+						<a href="{% url 'flower_shop_app:payment' %}" class="full_width_btn_link btn_link_dark">Заказать букет</a>
 						{% else %}
-						<a href="{% url 'flower_shop_app:index' %}"><button class="btn result__items_btn">На главную</button></a>
+						<a href="{% url 'flower_shop_app:index' %}" class="full_width_btn_link btn_link_dark">Заказать букет</a>
 						{% endif %}
 						<hr class="result__items_line" />
 						<div class="result__items_intro">Хотите что-то более специальное?</div>
 						<div class="result__items_block">
-							<a href="{% url 'flower_shop_app:consultation' %}" style="margin-bottom: -20px"><button class="btn largeBtn result__items_block__btn">Смотреть всю коллекцию</button></a>
-							<a href="#consultation"><button class="btn largeBtn result__items_block__btn">Заказать консультацию</button></a>
+							<a class="full_width_btn_link btn_link_light" href="{% url 'flower_shop_app:catalog' %}">Смотреть всю коллекцию</a>
+							<a class="full_width_btn_link btn_link_light" href="#consultation">Заказать консультацию</a>
 						</div>
 					</div>
 				</div>	
