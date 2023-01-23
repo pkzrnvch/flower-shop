@@ -14,7 +14,8 @@ from flower_shop_app.models import (FlowerBouquet,
                                     EventTag,
                                     FlowerBouquetAttributeItem,
                                     FlowerBouquetItem,
-                                    Order)
+                                    Order,
+                                    ColorTheme)
 
 
 def index(request):
@@ -110,6 +111,19 @@ def quiz_step_1(request):
 
 
 def quiz_step_2(request):
+    color_themes = ColorTheme.objects.all()
+    color_theme_id = request.GET.get('color_theme_id', None)
+    if color_theme_id:
+        request.session['color_theme_id'] = color_theme_id
+        return redirect('flower_shop_app:quiz_step_3')
+    return render(
+        request,
+        'flower_shop_app/quiz-2.html',
+        context={'color_themes': color_themes}
+    )
+
+
+def quiz_step_3(request):
     if not request.session.get('event_tag_id', None):
         return redirect('flower_shop_app:quiz_step_1')
     bouquet_price_range = request.GET.get('bouquet_price_range', None)
@@ -118,18 +132,21 @@ def quiz_step_2(request):
         return redirect('flower_shop_app:quiz_result')
     return render(
         request,
-        'flower_shop_app/quiz-2.html',
+        'flower_shop_app/quiz-3.html',
     )
 
 
 def quiz_result(request):
     event_tag_id = request.session.pop('event_tag_id', None)
+    color_theme_id = request.session.pop('color_theme_id', None)
     price_range = request.session.pop('bouquet_price_range', None)
     if not event_tag_id or not price_range:
         return redirect('flower_shop_app:quiz_step_1')
     bouquets = FlowerBouquet.objects.filter(availability=True)
     if event_tag_id != 'no_tag':
         bouquets = bouquets.filter(event_tags__id=event_tag_id)
+    if color_theme_id != 'no_tag':
+        bouquets = bouquets.filter(color_theme__id=color_theme_id)
 
     price_ranges = {
         'less_than_1000': lambda bqts: bqts.filter(price__lt=1000),

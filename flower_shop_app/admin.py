@@ -1,10 +1,16 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from flower_shop_app.models import ConsultationRequest, EventTag, Flower, FlowerBouquet, FlowerBouquetAttribute, \
-    FlowerBouquetAttributeItem, \
-    FlowerBouquetItem, Order, \
-    OrderItem
+from flower_shop_app.models import (ConsultationRequest,
+                                    EventTag,
+                                    Flower,
+                                    FlowerBouquet,
+                                    FlowerBouquetAttribute,
+                                    FlowerBouquetAttributeItem,
+                                    FlowerBouquetItem,
+                                    Order,
+                                    OrderItem,
+                                    ColorTheme)
 
 
 @admin.register(ConsultationRequest)
@@ -19,10 +25,14 @@ class EventTagAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+@admin.register(ColorTheme)
+class ColorThemeAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1
-
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

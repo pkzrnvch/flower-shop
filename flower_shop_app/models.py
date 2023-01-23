@@ -46,6 +46,17 @@ class EventTag(models.Model):
         return self.name
 
 
+class ColorTheme(models.Model):
+    name = models.CharField('название', max_length=100)
+
+    class Meta:
+        verbose_name = 'основной цвет букета'
+        verbose_name_plural = 'основные цвета букета'
+
+    def __str__(self):
+        return self.name
+
+
 class FlowerBouquetAttribute(models.Model):
     name = models.CharField('название', db_index=True, max_length=200)
 
@@ -103,6 +114,14 @@ class FlowerBouquet(models.Model):
     created = models.DateTimeField('создан', auto_now_add=True)
     updated = models.DateTimeField('обновлен', auto_now=True)
     event_tags = models.ManyToManyField(EventTag, related_name='flower_bouquets')
+    color_theme = models.ForeignKey(
+        ColorTheme,
+        verbose_name='основной цвет букета',
+        related_name='flower_bouquets',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     width = models.SmallIntegerField('ширина', validators=[MinValueValidator(10)], default=10)
     height = models.SmallIntegerField('высота', validators=[MinValueValidator(20)], default=20)
 
